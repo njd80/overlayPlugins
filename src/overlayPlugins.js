@@ -16,7 +16,7 @@
  *        @option animationDuration - Int - Animation duration in Milliseconds. Default 0.
  *
  *      Example function call:
- *      $('#minicart_overlay').overlay("cart_icon", {
+ *      $('#minicart_overlay').makeOverlay("cart_icon", {
  *        method:'click',
  *        offsets:[325,36],
  *        delay:2000,
@@ -93,7 +93,7 @@ $.fn.makeOverlay = function(triggerID, options) {
         pluginTarget.hideOverlay({
           animation:settings.animation,
           animationDuration:settings.animationDuration
-        })
+        });
       }, settings.delay);
     });
 
@@ -105,7 +105,7 @@ $.fn.makeOverlay = function(triggerID, options) {
         pluginTarget.hideOverlay({
           animation:settings.animation,
           animationDuration:settings.animationDuration
-        })
+        });
       }, settings.delay);
     });
   }
