@@ -22,7 +22,7 @@ module.exports = function(grunt) {
       },
       js: {
         files: ['src/*.js'],
-        tasks: ['jshint'],
+        tasks: ['dev-build'],
         options: {
           livereload: '<%=connect.options.livereload %>'
         }
@@ -40,13 +40,13 @@ module.exports = function(grunt) {
       options: {
         port: 9000,
         hostname: 'localhost',
-        base:'src',
+        base:'dev',
         livereload: true
       },
       livereload: {
         options: {
           open: true,
-          base:'src'
+          base:'dev'
         }
 
       }
@@ -54,16 +54,18 @@ module.exports = function(grunt) {
 
     //CLEAN
     clean: {
-      dist: ['dist/*']
+      dist: ['dist/*'],
+      dev: ['dev/*']
     },
 
     //CONCAT
     concat: {
-      dist: {
+      dev: {
         src: ['src/*.js'],
-        dest: 'dist/' + pkg.name + '_' + pkg.version + '.js',
+        dest: 'dev/overlayPlugins.js',
         options: {
           separator: '\n\n',
+          stripBanners: true,
           banner: '/*!\n * ' + pkg.name + '\n' +
           ' *   Version: ' + pkg.version + '\n' +
           ' *   Build Time: ' + grunt.template.today() + '\n' +
@@ -73,25 +75,70 @@ module.exports = function(grunt) {
       }
     },
 
+    //PROCESS
+    process: {
+      dev: {
+        src: 'dev/overlayPlugins.js',
+        dest: 'dev/overlayPlugins.js',
+        options: {
+          process: function (src, dest, content, fileObject) {
+            //wrap script in jQuery object
+            return '(function ($){\n' + content + '\n}(jQuery));';
+          }
+        }
+      },
+      dist: {
+        src: 'dev/overlayPlugins.js',
+        dest: 'dist/overlayPlugins.js'
+      }
+    },
+
+    //COPY
+    copy: {
+      dev: {
+        src: 'src/index.html',
+        dest: 'dev/index.html'
+      },
+      dist: {
+        src: 'dev/index.html',
+        dest: 'dist/index.html'
+      }
+    },
+
     //JSHINT
     jshint: {
-      src: [
+      pre: [
         'src/*.js'
+      ],
+      dev: [
+        'dev/overlayPlugins.js'
       ]
     }
   }); //END TASK OPTIONS
 
+  //register "dev-build" task
+  grunt.registerTask('dev-build', [
+    'jshint:pre',       //pre-check source JS files syntax
+    'clean:dev',        //wipe the dev/ folder
+    'concat:dev',       //merge the source js files and create the dist/ js file
+    'process:dev',      //wrap the generated file in jQuery object closure
+    'jshint:dev',       //jshint hint the final concatenated file
+    'copy:dev'          //jshint hint the final concatenated file
+  ]);
+
   //register "build" task
-  grunt.registerTask('build', [
-    'jshint',       //check source JS file syntax
-    'clean',        //wipe the dist/ folder
-    'concat'        //merge the source js files and create the dist/ js file
+  grunt.registerTask('dist-build', [
+    'jshint:dev',       //jshint hint the final concatenated file
+      //make the above much more robust??
+    //strip comments
+    //minify / uglify
+    //copy index??
   ]);
 
   //register "serve" task
   grunt.registerTask('serve', [
-    'jshint',             //check source JS file syntax
-    'connect:livereload', //create and connect to the server
-    'watch'               //watch for changes
+    'dev-build',            //check source JS file syntax
+    'connect:livereload',   //create and connect to the server
+    'watch'                 //watch for changes
   ]);
 };
