@@ -18,7 +18,10 @@ module.exports = function(grunt) {
     //WATCH
     watch: {
       gruntfile: {
-        files: ['Gruntfile.js']
+        files: ['Gruntfile.js'],		
+        options: {
+          livereload: '<%=connect.options.livereload %>'
+        }
       },
       js: {
         files: ['src/*.js'],
@@ -29,6 +32,7 @@ module.exports = function(grunt) {
       },
       html: {
         files: ['src/index.html'],
+        tasks: ['dev-build'],
         options: {
           livereload: '<%=connect.options.livereload %>'
         }
@@ -113,7 +117,27 @@ module.exports = function(grunt) {
       dev: [
         'dev/overlayPlugins.js'
       ]
-    }
+    },
+	
+	uglify: {
+		dev: {
+			options: {
+				sourceMap: true
+			},
+			files: {
+				'dev/overlayPlugins.min.js':['dev/overlayPlugins.js']
+			}
+		},
+		dist: {
+			options: {
+				sourceMap: true
+			},
+			files: {
+				'dev/overlayPlugins.min.js':['dev/overlayPlugins.js']
+			}
+		}
+	}
+	
   }); //END TASK OPTIONS
 
   //register "dev-build" task
@@ -123,7 +147,8 @@ module.exports = function(grunt) {
     'concat:dev',       //merge the source js files and create the dist/ js file
     'process:dev',      //wrap the generated file in jQuery object closure
     'jshint:dev',       //jshint hint the final concatenated file
-    'copy:dev'          //jshint hint the final concatenated file
+	'uglify:dev',		//minify the concatenated JS file
+    'copy:dev'          //copy the index.html tester to the dev folder
   ]);
 
   //register "build" task
