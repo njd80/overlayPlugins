@@ -10,14 +10,13 @@
 - Added Grunt Build & Serve support
 - Added test index.html
 
-#### 0.8.2 (27/08/2015)
-- Added JS Minification
-- Updated index.html JS Tester
-
-#### 0.8.3 (31/08/2015)
-- Simplified Grunt Build tasks
+#### 0.8.2 (31/08/2015)
+- Moved plugin banner comments to README.md
+- Updated package.json
+- Gruntfile Re-write
+- Consolidated Grunt Build tasks
 - Added dist/ output during build
-- Moved plugins banner comments to README.md
+- Added JS Minification
 - Improved index.html Tester
 
 
