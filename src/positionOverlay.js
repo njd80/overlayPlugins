@@ -1,15 +1,4 @@
-/**
- *  Plugin positionOverlay
- *    Positions a previously created overlay
- *    @param referenceID - String - ID of DOM element to use as a reference for overlay positioning.
- *    @param options - {Set} - Function options as defined below:
- *      @option offsets - Array[int,int] - [left offset, top offset] - Left and Top Offset to position the overlay relative to the target. Default [5,5].
- *
- *    Example function call - $('#miniCart_overlay').positionOverlay('cart_icon',{
- *      offsets:[100,20]
- *    });
- *
-*/
+//positionOverlay
 $.fn.positionOverlay = function(referenceID,options) {
 
 	//plugin target
@@ -50,4 +39,4 @@ $.fn.positionOverlay = function(referenceID,options) {
 	return this;
 
 };
-//end positionOverlay
+//END positionOverlay

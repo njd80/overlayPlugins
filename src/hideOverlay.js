@@ -1,18 +1,4 @@
-/**
- *  Plugin hideOverlay
- *    Hides a previously created overlay DOM element
- *    @param options - {Set} - Function options as defined below:
- *      @option delay - Int - Millisecond delay before hiding the overlay. Default 0.
- *      @option animation - String - Animation type to use. Default none. Options 'slide' or 'fade'.
- *      @option animationDuration - Int - Animation duration in Milliseconds. Default 0.
- *
- *    Example function call - $('#miniCart_overlay').hideOverlay({
- *      delay:2000,
- *      animation:'slide',
- *      animationDuration:2000
- *    });
- *
-*/
+//hideOverlay
 $.fn.hideOverlay = function(options) {
 
 	//plugin target
@@ -47,4 +33,4 @@ $.fn.hideOverlay = function(options) {
 	return this;
 
 };
-//end hideOverlay
+//END hideOverlay

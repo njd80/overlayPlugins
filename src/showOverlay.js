@@ -1,21 +1,4 @@
-/**
- *  Plugin showOverlay
- *    Shows a previously created overlay DOM element
- *    @param options - {Set} - Function options as defined below:
- *      @option autoHide - Boolean - True if the overlay should be hidden after a defined delay. Default false.
- *      @option delay - Int - Millisecond delay before hiding the overlay again. Default 1000 (1 Second).
- *      @option animation - String - Animation type to use. Default none. Options 'slide' or 'fade'.
- *      @option animationDuration - Int - Animation duration in Milliseconds. Default 0.
- *
- *    Example function call:
- *    $('#miniCart_overlay').showOverlay({
- *      autoHide:true,
- *      delay:2000,
- *      animation:'fade,
- *      animationDuration:1500
- *    });
- *
-*/
+//showOverlay
 $.fn.showOverlay = function(options) {
 
 	//plugin target
@@ -60,4 +43,4 @@ $.fn.showOverlay = function(options) {
 	return this;
 
 };
-//end showOverlay
+//END showOverlay
