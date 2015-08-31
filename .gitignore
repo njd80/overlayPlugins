@@ -1,5 +1,6 @@
 .idea
 *.remote
+*.sublime-*
 node_modules
 dist
 dev
