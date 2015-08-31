@@ -19,21 +19,21 @@ module.exports = function(grunt) {
 		watch: {
 			gruntfile: {
 				files: ['Gruntfile.js'],
-				tasks: ['dev-build'],
+				tasks: ['build'],
 				options: {
 					livereload: '<%=connect.options.livereload %>'
 				}
 			},
 			js: {
 				files: ['src/*.js'],
-				tasks: ['dev-build'],
+				tasks: ['build'],
 				options: {
 					livereload: '<%=connect.options.livereload %>'
 				}
 			},
 			html: {
 				files: ['src/index.html'],
-				tasks: ['dev-build'],
+				tasks: ['build'],
 				options: {
 					livereload: '<%=connect.options.livereload %>'
 				}
@@ -50,133 +50,130 @@ module.exports = function(grunt) {
 			},
 			livereload: {
 				options: {
-				open: true,
-				base:'dev'
+					open: true,
+					base:'dev'
 				}
 			}
 		},
 
 		//CLEAN
 		clean: {
-			dist: ['dist/*'],
-			dev: ['dev/*']
+			dev: ['dev/*'],
+			dist: ['dist/*']
 		},
 
 		//CONCAT
 		concat: {
+			options: {
+				separator: '\n\n'
+			},
 			dev: {
 				src: ['src/*.js'],
-				dest: 'dev/overlayPlugins.js',
-				options: {
-					separator: '\n\n',
-					stripBanners: true,
-					banner: '/*!\n * ' + pkg.name + '\n' +
-					' *   Version: ' + pkg.version + '\n' +
-					' *   Build Time: ' + grunt.template.today() + '\n' +
-					' */\n\n',
-					footer: '\n\n/*! End ' + pkg.name + ' */'
-				}
-			}
-			//TODO - Strip Comments
-		},
-
-	//PROCESS
-		process: {
-			dev: {
-				src: 'dev/overlayPlugins.js',
-				dest: 'dev/overlayPlugins.js',
-				options: {
-					process: function (src, dest, content, fileObject) {
-						//wrap script in jQuery object
-						return '(function ($){\n' + content + '\n}(jQuery));';
-					}
-				}
+				dest: 'dev/overlayPlugins.js'
 			},
 			dist: {
+				src: ['src/*.js'],
+				dest: 'dist/overlayPlugins.js'
+			}
+		},
+
+		//PROCESS
+		process: {
+			options: {
+				process: function (src, dest, content, fileObject) {
+					var banner = '/*!\n*	' + pkg.name + '\n' +
+						'*	Author: Neil Donaldson' + '\n' +
+						'*	Copyright: ' + grunt.template.today('yyyy') + '\n' +
+						'*	Version: ' + pkg.version + '\n' +
+						'*	Build Time: ' + grunt.template.today() + '\n' +
+						'*/\n';
+					var footer = '\n/*! End ' + pkg.name + ' */';
+					var jQueryWrapper = '(function ($){\n' + content + '\n}(jQuery));';
+					return banner + jQueryWrapper + footer;
+				}
+			},
+			dev: {
 				src: 'dev/overlayPlugins.js',
+				dest: 'dev/overlayPlugins.js'
+			},
+			dist: {
+				src: 'dist/overlayPlugins.js',
 				dest: 'dist/overlayPlugins.js'
 			}
 		},
 
 		//COPY
 		copy: {
-			dev: {
+			htmldev: {
 				src: 'src/index.html',
-				dest: 'dev/index.html'
+				dest: 'dev/index.html',
+				options : {
+					process: function (content, srcpath) {
+						var buildTime = content.replace(/{bt}/, grunt.template.today());
+						return buildTime.replace(/{env}/g, 'Development');
+					}
+				}
 			},
-			dist: {
-				src: 'dev/index.html',
-				dest: 'dist/index.html'
+			htmldist: {
+				src: 'src/index.html',
+				dest: 'dist/index.html',
+				options : {
+					process: function (content, srcpath) {
+						var buildTime = content.replace(/{bt}/, grunt.template.today());
+						var env = buildTime.replace(/{env}/g, 'Distribution');
+						return env.replace(/overlayPlugins.js/g,'overlayPlugins.min.js');
+					}
+				}
 			}
 		},
 
 		//JSHINT
 		jshint: {
-			pre: [
+			src: [
 				'src/*.js'
 			],
 			dev: [
 				'dev/overlayPlugins.js'
 			],
 			dist: [
-				'dist/overlayPlugins.js'
+				'dev/overlayPlugins.js'
 			]
 		},
 
 		//UGLIFY
 		uglify: {
-			dev: {
-				options: {
-					sourceMap: true
-				},
-				files: {
-					'dev/overlayPlugins.min.js':['dev/overlayPlugins.js']
-				}
+			options: {
+				sourceMap: true
 			},
 			dist: {
-				options: {
-					sourceMap: true
-				},
 				files: {
-					'dev/overlayPlugins.min.js':['dev/overlayPlugins.js']
+					'dist/overlayPlugins.min.js':['dist/overlayPlugins.js']
 				}
 			}
 		}
-		//END UGLIFY
 	});
 	/* END CONFIGURE TASKS */
 
 	/* REGISTER TASKS */
-	//"dev-build"
-	grunt.registerTask('dev-build', [
-		'jshint:pre',       //pre-check source JS files syntax
-		'clean:dev',        //wipe the dev/ folder
-		'concat:dev',       //merge the source js files and create the dist/ js file
-		'process:dev',      //wrap the generated file in jQuery object closure
-		'jshint:dev',       //jshint hint the final concatenated file
-		'uglify:dev',		//minify the concatenated JS file
-		'copy:dev'          //copy the index.html tester to the dev folder
-	]);
-
-	//"dist-build"
-	grunt.registerTask('dist-build', [
-		'jshint:pre',       //pre-check source JS files syntax
-		'clean:dev',        //wipe the dev/ folder
-		'concat:dev',       //merge the source js files and create the dist/ js file
-		'process:dev',      //wrap the generated file in jQuery object closure
-		'jshint:dev',       //jshint hint the final concatenated file
-		'uglify:dev',		//minify the concatenated JS file
-		'copy:dev'          //copy the index.html tester to the dev folder
-
-		//strip comments
+	//"build"
+	grunt.registerTask('build', [
+		'jshint:src',       //check source JS files syntax
+		'clean',        	//wipe the dev/ and dist/ folders
+		'concat',       	//merge the source js files and copy to dev/ & dist/
+		'process',      	//wrap the generated file(s) in jQuery wrapper & add banner
+		'jshint:dev',       //jshint hint the final concatenated file(s)
+		'jshint:dist',      //jshint hint the final concatenated file(s)
+		'copy',				//copy index.html files to dev/ & dist/ folders
+		'uglify'			//minify the dist/ JS file for release
 	]);
 
 	//"serve" task
 	grunt.registerTask('serve', [
-		'dev-build',            //check source JS file syntax
+		'build',            	//build
 		'connect:livereload',   //create and connect to the server
 		'watch'                 //watch for changes
 	]);
 	/* END REGISTER TASKS */
+
 };
 // END module.exports = function(grunt)
