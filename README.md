@@ -1,16 +1,16 @@
-# overlayPlugins
+### overlayPlugins
 **Re-usable jQuery Plugins for creating/manipulating overlays**
 
-### Version History
-#### 0.8 (29/01/2015)
+#### Version History
+##### 0.8 (29/01/2015)
 - Beta Release  
   https://github.com/njd80/overlayPlugins/releases/tag/v0.8
 
-#### 0.8.1 (27/04/2015)
+##### 0.8.1 (27/04/2015)
 - Added Grunt Build & Serve support
 - Added test index.html
 
-#### 0.8.2 (31/08/2015)
+##### 0.8.2 (31/08/2015)
 - Moved plugin banner comments to README.md
 - Updated package.json
 - Gruntfile Re-write
@@ -20,9 +20,9 @@
 - Improved index.html Tester
 
 
-### Instructions
+#### Available Functions
 
-#### makeOverlay
+##### makeOverlay()
 Creates a new overlay based on the target
 - @param triggerID - String - ID of DOM element to use as a trigger for the overlay and reference for positioning.
 - @param options - {Set} - Function options as defined below:
@@ -43,7 +43,7 @@ $('#minicart_overlay').makeOverlay("cart_icon", {
 });
 ```
 
-#### hideOverlay
+##### hideOverlay()
 Hides a previously created overlay DOM element
 - @param options - {Set} - Function options as defined below:
   * @option delay - Int - Millisecond delay before hiding the overlay. Default 0.
@@ -59,7 +59,7 @@ $('#miniCart_overlay').hideOverlay({
 });
 ```
 
-#### showOverlay
+##### showOverlay()
 Shows a previously created overlay DOM element
 - @param options - {Set} - Function options as defined below:
   * @option autoHide - Boolean - True if the overlay should be hidden after a defined delay. Default false.
@@ -77,7 +77,7 @@ $('#miniCart_overlay').showOverlay({
 });
 ```
 
-#### positionOverlay
+##### positionOverlay()
 Positions a previously created overlay
 - @param referenceID - String - ID of DOM element to use as a reference for overlay positioning.
   * @param options - {Set} - Function options as defined below:
