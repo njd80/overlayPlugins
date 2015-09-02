@@ -1,7 +1,7 @@
-### overlayPlugins
+## overlayPlugins
 **Re-usable jQuery Plugins for creating/manipulating overlays**
-
-#### Version History
+***
+### Version History
 ##### 0.8 (29/01/2015)
 - Beta Release  
   https://github.com/njd80/overlayPlugins/releases/tag/v0.8
@@ -19,8 +19,9 @@
 - Added JS Minification
 - Improved index.html Tester
 
+***
 
-#### Available Functions
+### Plugin Functions
 
 ##### makeOverlay()
 Creates a new overlay based on the target
@@ -42,7 +43,7 @@ $('#minicart_overlay').makeOverlay("cart_icon", {
 	animationDuration:500
 });
 ```
-
+***
 ##### hideOverlay()
 Hides a previously created overlay DOM element
 - @param options - {Set} - Function options as defined below:
@@ -58,7 +59,7 @@ $('#miniCart_overlay').hideOverlay({
 	animationDuration:2000
 });
 ```
-
+***
 ##### showOverlay()
 Shows a previously created overlay DOM element
 - @param options - {Set} - Function options as defined below:
@@ -72,11 +73,11 @@ Example function call:
 $('#miniCart_overlay').showOverlay({
 	autoHide:true,
 	delay:2000,
-	animation:'fade,
+	animation:'fade',
 	animationDuration:1500
 });
 ```
-
+***
 ##### positionOverlay()
 Positions a previously created overlay
 - @param referenceID - String - ID of DOM element to use as a reference for overlay positioning.
