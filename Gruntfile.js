@@ -82,7 +82,7 @@ module.exports = function(grunt) {
 			options: {
 				process: function (src, dest, content, fileObject) {
 					var banner = '/*!\n*	' + pkg.name + '\n' +
-						'*	Author: Neil Donaldson' + '\n' +
+						'*	Author: ' + pkg.author + '\n' +
 						'*	Copyright: ' + grunt.template.today('yyyy') + '\n' +
 						'*	Version: ' + pkg.version + '\n' +
 						'*	Build Time: ' + grunt.template.today() + '\n' +
@@ -136,7 +136,7 @@ module.exports = function(grunt) {
 				'dev/overlayPlugins.js'
 			],
 			dist: [
-				'dev/overlayPlugins.js'
+				'dist/overlayPlugins.js'
 			]
 		},
 
